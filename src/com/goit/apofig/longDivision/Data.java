@@ -14,24 +14,21 @@ class Data {
     private List<Integer> offsets = new ArrayList<>();  // отступы в вычислении столбиком
     private int dotIndex;                               // индекс десятичной запятой
     private int startPeriod;                            // индекс начала периода
-    private double numerator;                           // числитель
-    private double denominator;                         // знаменатель
-    private long long1;                                 // числитель, приведенный к целому числу
-    private long long2;                                 // знаменатель, приведенный к целому числу
-    private String string1;                             // числитель, приведенный к целому числу в символьном виде
-    private String string2;                             // знаменатель, приведенный к целому числу в символьном виде
+    private SourceValue numerator;                        // числитель
+    private SourceValue denominator;                    // знаменатель
 
     Data(double numerator, double denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+        this.numerator = new SourceValue(numerator);
+        this.denominator = new SourceValue(denominator);
+        SourceValue.cast(this.numerator, this.denominator);
     }
 
-    String getString1() {
-        return string1;
+    public SourceValue getNumerator() {
+        return numerator;
     }
 
-    String getString2() {
-        return string2;
+    public SourceValue getDenominator() {
+        return denominator;
     }
 
     List<Long> getMinuends() {
@@ -59,87 +56,72 @@ class Data {
     }
 
     void calculate() {
-        cast();
+        dotIndex = -1;
+        startPeriod = -1;
         calculate1();
         correctSomePeriodic();
     }
 
-    private void cast() {
-        getRidOfTheFraction();
-        castToLong();
-        castToString();
-    }
-
-    private void castToString() {
-        string1 = String.valueOf(long1);
-        string2 = String.valueOf(long2);
-    }
-
-    private void castToLong() {
-        long1 = ((Double) numerator).longValue();
-        long2 = ((Double) denominator).longValue();
-    }
-
-    private void getRidOfTheFraction() {
-        String decimalPart1 = Double.toString(numerator).split("\\.")[1];
-        String decimalPart2 = Double.toString(denominator).split("\\.")[1];
-
-        if ((!"0".equals(decimalPart1)) || (!"0".equals(decimalPart2))) {
-            int koef = Math.max(decimalPart1.length(), decimalPart2.length());
-            for (int i = 0; i < koef; i++) {
-                numerator *= 10;
-                denominator *= 10;
-            }
-        }
-    }
-
     private void calculate1() {
-        int len2;                   // число цифр в знаменателе
-        int len1;                   // число цифр в числителе
-        int offset = 0;             // отступ
-        int digitOfNumeratorNumber; // номер цифры числителя, которая добавляется к разности
-        long minuend;               // уменьшаемое
-        long answerPart;            // цифра ответа
-        long subtrahend;            // вычитаемое
-        long residual;              // разность
-        dotIndex = -1;
-        startPeriod = -1;
-        len2 = string2.length();
-        len1 = string1.length();
-        digitOfNumeratorNumber = Math.min(len1, len2);
-        minuend = (len2 < len1) ? Long.valueOf(string1.substring(0, len2)) : long1;
+        int offset = 0;
+        long residual;
+        int numberOfNumeratorDigit = SourceValue.getMinLength(numerator, denominator);
+        long minuend = numerator.getFirstMinuend(denominator);
         do {
-            answerPart = minuend / long2;
-            subtrahend = answerPart * long2;
+            long answerPart = minuend / denominator.getLong();
+            long subtrahend = answerPart * denominator.getLong();
             residual = minuend - subtrahend;
             offset += getLengthOf(minuend) - getLengthOf(residual);
-            subtrahends.add(subtrahend);
-            minuends.add(minuend);
-            answerParts.add(answerPart);
-            offsets.add(offset);
-            minuend = (digitOfNumeratorNumber >= len1)
-                    ? residual * 10
-                    : residual * 10 + getDigitOfNumerator(digitOfNumeratorNumber);
-            if (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex)) {
-                startPeriod = residuals.lastIndexOf(residual) + 1;
-                minuends.add(minuend / 10);
+            addValuesToLists(offset, minuend, answerPart, subtrahend);
+            minuend = numerator.getNextMinuend(numberOfNumeratorDigit, residual);
+            if (isFoundIrrationalAnswer(residual)) {
+                placePeriod(residual, minuend);
                 break;
             }
             residuals.add(residual);
-            if ((!hasDot()) && (digitOfNumeratorNumber >= len1)) {
-                dotIndex = answerParts.size();
-            }
-            digitOfNumeratorNumber++;
-        } while ((residual != 0) || (digitOfNumeratorNumber <= len1));
+            placeDotIfNeed(numberOfNumeratorDigit);
+            numberOfNumeratorDigit++;
+        } while (!isFoundRationalAnswer(residual) || !doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
+    }
+
+    private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
+        return numberOfNumeratorDigit > numerator.length();
+    }
+
+    private boolean isFoundRationalAnswer(long residual) {
+        return residual == 0;
+    }
+
+    private void addValuesToLists(int offset, long minuend, long answerPart, long subtrahend) {
+        subtrahends.add(subtrahend);
+        minuends.add(minuend);
+        answerParts.add(answerPart);
+        offsets.add(offset);
+    }
+
+    private void placeDotIfNeed(int numberOfNumeratorDigit) {
+        if (isNeedDot(numberOfNumeratorDigit)) {
+            dotIndex = answerParts.size();
+        }
+    }
+
+    private void placePeriod(long residual, long minuend) {
+        startPeriod = residuals.lastIndexOf(residual) + 1;
+        minuends.add(minuend / 10);
+    }
+
+    private boolean isNeedDot(int numberOfNumeratorDigit) {
+        return (!hasDot()) && (numberOfNumeratorDigit >= numerator.length());
+    }
+
+    private boolean isFoundIrrationalAnswer(long residual) {
+        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex));
     }
 
     private int getLengthOf(long value) {
         return String.valueOf(value).length();
     }
 
-    private Long getDigitOfNumerator(int digitNumber) {
-        return Long.valueOf(string1.substring(digitNumber, digitNumber + 1));
-    }
 
     private boolean hasDot() {
         return (dotIndex != -1);
