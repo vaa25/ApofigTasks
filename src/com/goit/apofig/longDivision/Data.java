@@ -7,15 +7,15 @@ import java.util.List;
  * @author Alexander Vlasov
  */
 class Data {
-    private List<Long> residuals = new ArrayList<>();   // разности
-    private List<Long> minuends = new ArrayList<>();    // уменьшаемые
-    private List<Long> subtrahends = new ArrayList<>(); // вычитаемые
-    private List<Long> answerParts = new ArrayList<>(); // цифры ответа
-    private List<Integer> offsets = new ArrayList<>();  // отступы в вычислении столбиком
-    private int dotIndex;                               // индекс десятичной запятой
-    private int startPeriod;                            // индекс начала периода
-    private SourceValue numerator;                        // числитель
-    private SourceValue denominator;                    // знаменатель
+    private List<Long> residuals = new ArrayList<>();
+    private List<Long> minuends = new ArrayList<>();
+    private List<Long> subtrahends = new ArrayList<>();
+    private List<Long> answerParts = new ArrayList<>();
+    private List<Integer> offsets = new ArrayList<>();
+    private int dotIndex;
+    private int startPeriod;
+    private SourceValue numerator;
+    private SourceValue denominator;
 
     Data(double numerator, double denominator) {
         this.numerator = new SourceValue(numerator);
