@@ -29,18 +29,13 @@ class Customer {
         String result = "Учет аренды для " + getName() + "\n";
         while (rentals.hasMoreElements()) {
             Rental each = (Rental) rentals.nextElement();
+            frequentRenterPoints += getFrequentRenterPoints(each);
 
-            //определить сумму для каждой строки
-            double thisAmount = amountFor(each);
-            // добавить очки для активного арендатора
-            frequentRenterPoints++;
-            // бонус за аренду новинки на два дня
-            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) &&
-                    each.getDaysRented() > 1) frequentRenterPoints++;
+
             //показать результаты для этой аренды
             result += "\t" + each.getMovie().getTitle() + "\t" +
-                    String.valueOf(thisAmount) + "\n";
-            totalAmount += thisAmount;
+                    String.valueOf(each.getCharge()) + "\n";
+            totalAmount += each.getCharge();
         }
         //добавить нижний колонтитул
         result += "Сумма задолженности составляет " +
@@ -50,23 +45,12 @@ class Customer {
         return result;
     }
 
-    private double amountFor(Rental each) {
-        double thisAmount = 0;
-        switch (each.getMovie().getPriceCode()) {
-            case Movie.REGULAR:
-                thisAmount += 2;
-                if (each.getDaysRented() > 2)
-                    thisAmount += (each.getDaysRented() - 2) * 1.5;
-                break;
-            case Movie.NEW_RELEASE:
-                thisAmount += each.getDaysRented() * 3;
-                break;
-            case Movie.CHILDRENS:
-                thisAmount += 1.5;
-                if (each.getDaysRented() > 3)
-                    thisAmount += (each.getDaysRented() - 3) * 1.5;
-                break;
-        }
-        return thisAmount;
+    private int getFrequentRenterPoints(Rental each) {
+        int frequentRenterPoints = 1;
+        // бонус за аренду новинки на два дня
+        if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) &&
+                each.getDaysRented() > 1) frequentRenterPoints++;
+        return frequentRenterPoints;
     }
+
 }
