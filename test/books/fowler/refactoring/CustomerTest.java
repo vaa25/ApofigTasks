@@ -4,13 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CustomerTest {
-    Customer customer;
+    private Customer customer;
 
     @Before
     public void setUp() throws Exception {
         customer = new Customer("Alexander");
         CustomerLauncher.setMovies();
         CustomerLauncher.rentMovies(customer);
+
     }
     @Test
     public void testStatement() throws Exception {
