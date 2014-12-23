@@ -23,28 +23,35 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
         int frequentRenterPoints = 0;
-        Enumeration rentals = _rentals.elements();
+        Enumeration<Rental> rentals = _rentals.elements();
         String result = "Учет аренды для " + getName() + "\n";
         while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
+            Rental each = rentals.nextElement();
             frequentRenterPoints += getFrequentRenterPoints(each);
 
 
             //показать результаты для этой аренды
             result += "\t" + each.getMovie().getTitle() + "\t" +
                     String.valueOf(each.getCharge()) + "\n";
-            totalAmount += each.getCharge();
         }
         //добавить нижний колонтитул
         result += "Сумма задолженности составляет " +
-                String.valueOf(totalAmount) + "\n";
+                String.valueOf(getTotalAmount()) + "\n";
         result += "Вы заработали " + String.valueOf(frequentRenterPoints) +
                 " очков за активность";
         return result;
     }
 
+    private double getTotalAmount() {
+        double result = 0;
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
+            result += each.getCharge();
+        }
+        return result;
+    }
     private int getFrequentRenterPoints(Rental each) {
         int frequentRenterPoints = 1;
         // бонус за аренду новинки на два дня

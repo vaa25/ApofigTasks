@@ -20,11 +20,16 @@ public class CustomerTest {
                 "\tBattleship Galaxy\t9.5\n" +
                 "Сумма задолженности составляет 53.5\n" +
                 "Вы заработали 11 очков за активность";
-        if (!example.equals(customer.statement())) {
+        String result = customer.statement();
+        if (!example.equals(result)) {
+            System.out.println("Failed!!!!!! \n");
             System.out.println("Example: \n");
             System.out.println(example);
             System.out.println();
             System.out.println("Reality: \n");
+            System.out.println(result);
+        } else {
+            System.out.println("Well done!!!");
         }
     }
 }
