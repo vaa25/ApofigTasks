@@ -44,7 +44,7 @@ class Customer {
         int result = 0;
         Enumeration<Rental> rentals = _rentals.elements();
         while (rentals.hasMoreElements()) {
-            result += getFrequentRenterPoints(rentals.nextElement());
+            result += rentals.nextElement().getFrequentRenterPoints();
         }
         return result;
     }
@@ -56,13 +56,6 @@ class Customer {
             result += rentals.nextElement().getCharge();
         }
         return result;
-    }
-    private int getFrequentRenterPoints(Rental each) {
-        int frequentRenterPoints = 1;
-        // бонус за аренду новинки на два дня
-        if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) &&
-                each.getDaysRented() > 1) frequentRenterPoints++;
-        return frequentRenterPoints;
     }
 
     public String htmlStatement() {

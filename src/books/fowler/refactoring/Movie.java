@@ -12,11 +12,15 @@ public class Movie {
 
     public Movie(String title, int priceCode) {
         _title = title;
-        _priceCode = priceCode;
+        setPriceCode(priceCode);
+    }
+
+    public int setPriceCode() {
+        return _priceCode;
     }
 
     public int getPriceCode() {
-        return _priceCode;
+        return setPriceCode();
     }
 
     public void setPriceCode(int arg) {
@@ -45,5 +49,15 @@ public class Movie {
                 break;
         }
         return result;
+    }
+
+    int getFrequentRenterPoints(int daysRented) {
+
+        // бонус за аренду новинки на два дня
+        if ((getPriceCode() == NEW_RELEASE) && daysRented > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 }
