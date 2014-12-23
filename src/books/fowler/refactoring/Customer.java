@@ -34,7 +34,7 @@ class Customer {
         }
         //добавить нижний колонтитул
         result += "Сумма задолженности составляет " +
-                String.valueOf(getTotalAmount()) + "\n";
+                String.valueOf(getTotalCharge()) + "\n";
         result += "Вы заработали " + String.valueOf(getTotalFrequentRenterPoints()) +
                 " очков за активность";
         return result;
@@ -49,7 +49,7 @@ class Customer {
         return result;
     }
 
-    private double getTotalAmount() {
+    private double getTotalCharge() {
         double result = 0;
         Enumeration<Rental> rentals = _rentals.elements();
         while (rentals.hasMoreElements()) {
@@ -63,6 +63,24 @@ class Customer {
         if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) &&
                 each.getDaysRented() > 1) frequentRenterPoints++;
         return frequentRenterPoints;
+    }
+
+    public String htmlStatement() {
+        Enumeration rentals = _rentals.elements();
+        String result = "<H1>Операции аренды для <EM>" + getName() + "</EM></H1><P>\n";
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
+            // показать результаты по каждой аренде
+            result += each.getMovie().getTitle() + ": " +
+                    String.valueOf(each.getCharge()) + "<BR>\n";
+        }
+        //добавить нижний колонтитул
+        result += "<P>Ваша задолженность составляет <EM>" +
+                String.valueOf(getTotalCharge()) + "</EM><P>\n";
+        result += "На этой аренде вы заработали <EM>" +
+                String.valueOf(getTotalFrequentRenterPoints()) +
+                "</EM> очков за активность<P>";
+        return result;
     }
 
 }
