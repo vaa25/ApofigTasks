@@ -2,7 +2,6 @@ package books.fowler.refactoring;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Alexander Vlasov
@@ -13,15 +12,19 @@ public class CustomerLauncher {
     public static void main(String[] args) {
         setMovies();
         Customer customer = new Customer("Alexander");
-        for (int i = 0; i < movies.size(); i++) {
-            customer.addRental(new Rental(movies.get(i), new Random().nextInt(10)));
-
-        }
+        rentMovies(customer);
 
         System.out.println(customer.statement());
     }
 
-    private static void setMovies() {
+    public static void rentMovies(Customer customer) {
+        for (int i = 0; i < movies.size(); i++) {
+            customer.addRental(new Rental(movies.get(i), i));
+
+        }
+    }
+
+    public static void setMovies() {
         movies = new ArrayList<>();
         movies.add(new Movie("Lost", 0));
         movies.add(new Movie("Elementary", 1));
@@ -32,4 +35,5 @@ public class CustomerLauncher {
         movies.add(new Movie("Grimm", 2));
         movies.add(new Movie("Battleship Galaxy", 0));
     }
+
 }
