@@ -44,12 +44,6 @@ public class Movie {
     }
 
     int getFrequentRenterPoints(int daysRented) {
-
-        // бонус за аренду новинки на два дня
-        if ((getPriceCode() == NEW_RELEASE) && daysRented > 1) {
-            return 2;
-        } else {
-            return 1;
-        }
+        return _price.getFrequentRenterPoints(daysRented);
     }
 }

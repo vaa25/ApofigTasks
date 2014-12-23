@@ -7,6 +7,10 @@ abstract class Price {
     abstract int getPriceCode();
 
     abstract double getCharge(int daysRented);
+
+    int getFrequentRenterPoints(int daysRented) {
+        return 1;
+    }
 }
 
 class ChildrensPrice extends Price {
@@ -15,12 +19,10 @@ class ChildrensPrice extends Price {
     }
 
     double getCharge(int daysRented) {
-        if (daysRented > 3) {
-            return 1.5 + (daysRented - 3) * 1.5;
-        } else {
-            return 1.5;
-        }
+        return (daysRented > 3) ? (1.5 + (daysRented - 3) * 1.5) : 1.5;
     }
+
+
 }
 
 class NewReleasePrice extends Price {
@@ -31,6 +33,12 @@ class NewReleasePrice extends Price {
     double getCharge(int daysRented) {
         return daysRented * 3;
     }
+
+    int getFrequentRenterPoints(int daysRented) {
+
+        // бонус за аренду новинки на два дня
+        return (daysRented > 1) ? 2 : 1;
+    }
 }
 
 class RegularPrice extends Price {
@@ -39,10 +47,6 @@ class RegularPrice extends Price {
     }
 
     double getCharge(int daysRented) {
-        if (daysRented > 2)
-            return 2 + (daysRented - 2) * 1.5;
-        else {
-            return 2;
-        }
+        return (daysRented > 2) ? (2 + (daysRented - 2) * 1.5) : 2;
     }
 }
