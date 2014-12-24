@@ -26,9 +26,8 @@ public class LongDivision {
     public void calculate(double d1, double d2) {
         Data data = new Data(d1, d2);
         data.calculate();
-        AnswerBuilder answerBuilder = new AnswerBuilder(data);
-        answer = answerBuilder.buildAnswer();
-        longAnswer = answerBuilder.buildLongAnswer();
+        answer = new AnswerBuilder(data).buildAnswer();
+        longAnswer = new LongAnswerBuilder(data).buildLongAnswer();
     }
 
 

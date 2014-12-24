@@ -12,7 +12,6 @@ class Data {
     private List<Long> minuends = new ArrayList<>();
     private List<Long> subtrahends = new ArrayList<>();
     private List<Long> answerParts = new ArrayList<>();
-    private List<Integer> offsets = new ArrayList<>();
     private int dotIndex;
     private int startPeriod;
     private SourceValue numerator;
@@ -47,10 +46,6 @@ class Data {
         return answerParts;
     }
 
-    List<Integer> getOffsets() {
-        return offsets;
-    }
-
     int getDotIndex() {
         return dotIndex;
     }
@@ -64,7 +59,6 @@ class Data {
         startPeriod = ABSENT;
         calculate1();
         correctFirstZero();
-        setOffsets();
     }
 
     private void correctFirstZero() {
@@ -120,17 +114,6 @@ class Data {
         }
     }
 
-    private void setOffsets() {
-        int offset = 0;
-        offsets = new ArrayList<>();
-        for (int i = 0; i < residuals.size(); i++) {
-            offset += getLengthOf(minuends.get(i)) - getLengthOf(residuals.get(i));
-            System.out.println(minuends.get(i) + "\t" + residuals.get(i) + "\t" + offset);
-            offsets.add(offset);
-        }
-        return;
-    }
-
     private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
         return (numberOfNumeratorDigit > numerator.length());
     }
@@ -162,11 +145,6 @@ class Data {
     private boolean isIrrationalSymptomDetected(long residual) {
         return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
     }
-
-    private int getLengthOf(long value) {
-        return String.valueOf(value).length();
-    }
-
 
     private boolean hasDot() {
         return (dotIndex != ABSENT);
