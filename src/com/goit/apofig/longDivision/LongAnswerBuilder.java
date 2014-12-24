@@ -1,7 +1,5 @@
 package com.goit.apofig.longDivision;
 
-import java.util.List;
-
 /**
  * @author Alexander Vlasov
  */
@@ -36,14 +34,10 @@ class LongAnswerBuilder {
     private void buildLastResidual(int lastOffsetIndex) {
         append(getOffset(lastOffsetIndex + 1));
         if (data.hasIrrationalAnswer()) {
-            append(getLastValue(data.getResiduals()).toString());
+            append(data.getResiduals().get(data.getResiduals().size() - 1).toString());
         } else if (data.isRationalSymptomDetected()) {
             append("0");
         }
-    }
-
-    private Long getLastValue(List<Long> values) {
-        return values.get(values.size() - 1);
     }
 
     private void buildCascade(String subtrahend, String minuend, String offset) {
@@ -59,11 +53,11 @@ class LongAnswerBuilder {
     }
 
     private String getOffset(int length) {
-        return getOffset(length, ' ');
+        return getCharOffset(length, ' ');
     }
 
     private String getLine(int length) {
-        return getOffset(length, '-');
+        return getCharOffset(length, '-');
     }
 
     private void buildSubtrahend(String offset, String value) {
@@ -100,7 +94,7 @@ class LongAnswerBuilder {
         }
     }
 
-    private String getOffset(int i, char value) {
+    private String getCharOffset(int i, char value) {
         StringBuilder result = new StringBuilder();
 
         for (int j = 0; j < i; j++) {

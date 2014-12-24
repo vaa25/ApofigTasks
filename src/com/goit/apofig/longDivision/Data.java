@@ -16,6 +16,7 @@ class Data {
     private int startPeriod;
     private SourceValue numerator;
     private SourceValue denominator;
+
     Data(double numerator, double denominator) {
         this.numerator = new SourceValue(numerator);
         this.denominator = new SourceValue(denominator);
@@ -63,19 +64,15 @@ class Data {
 
     private void correctFirstZero() {
         if (answerParts.get(0) == 0 && (dotIndex > 1)) {
-            removeFirst(answerParts);
-            removeFirst(residuals);
-            removeFirst(minuends);
-            removeFirst(subtrahends);
+            answerParts.remove(0);
+            residuals.remove(0);
+            minuends.remove(0);
+            subtrahends.remove(0);
             dotIndex--;
             if (hasIrrationalAnswer()) {
                 startPeriod--;
             }
         }
-    }
-
-    private void removeFirst(List list) {
-        list.remove(0);
     }
 
     boolean hasIrrationalAnswer() {
