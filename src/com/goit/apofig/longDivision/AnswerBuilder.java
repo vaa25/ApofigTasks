@@ -19,23 +19,21 @@ class AnswerBuilder {
 
     String buildAnswer() {
         List<Long> answerParts = data.getAnswerParts();
-        int dotIndex = data.getDotIndex();
-        int startPeriod = data.getStartPeriod();
-        StringBuilder answer = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < answerParts.size(); i++) {
-            if (i == dotIndex) {
-                answer.append('.');
+            if (i == data.getDotIndex()) {
+                result.append('.');
             }
-            if (i == startPeriod) {
-                answer.append('(');
+            if (i == data.getStartPeriodIndex()) {
+                result.append('(');
             }
-            answer.append(answerParts.get(i));
+            result.append(answerParts.get(i));
         }
-        if (startPeriod != -1) {
-            answer.append(')');
+        if (data.hasIrrationalAnswer()) {
+            result.append(')');
         }
-        return answer.toString();
+        return result.toString();
     }
 
     String buildLongAnswer() {
@@ -43,9 +41,9 @@ class AnswerBuilder {
         List<Long> subtrahends = data.getSubtrahends();
         List<Long> minuends = data.getMinuends();
         List<Integer> offsets = data.getOffsets();
-        buildFirstThreeStrokes(subtrahends.get(0).toString());
+        buildFirstThreeStrokes();
         buildCascades(offsets, minuends, subtrahends);
-        buildLastMinuend(getLastOffset(offsets), getLastValue(minuends), getLastValue(subtrahends));
+        buildLastResidual();
         return result.toString();
     }
 
@@ -58,23 +56,21 @@ class AnswerBuilder {
         }
     }
 
-    private void buildLastMinuend(int offset, Long lastMinuend, Long subtrahend) {
-        append(getOffset(offset + 1),
-                hasPeriod()
-                        ? lastMinuend.toString()
-                        : ((Long) (lastMinuend - subtrahend)).toString());
+    private void buildLastResidual() {
+        append(getOffset(getLastOffset(data.getOffsets()) + 1));
+        if (data.hasIrrationalAnswer()) {
+            append(getLastValue(data.getResiduals()).toString());
+        } else if (data.isRationalSymptomDetected()) {
+            append("0");
+        }
     }
 
-    private int getLastOffset(List<Integer> values) {
+    private Integer getLastOffset(List<Integer> values) {
         return values.get(values.size() - 1);
     }
 
-    private long getLastValue(List<Long> values) {
+    private Long getLastValue(List<Long> values) {
         return values.get(values.size() - 1);
-    }
-
-    private boolean hasPeriod() {
-        return data.getStartPeriod() > 0;
     }
 
     private void buildCascade(String subtrahend, String minuend, String offset) {
@@ -109,20 +105,19 @@ class AnswerBuilder {
         append(offset, " ", value, "\n");
     }
 
-    private void buildFirstThreeStrokes(String subtrahend) {
-        int subtrahendLength = subtrahend.length();
-        int numeratorLength = data.getNumerator().length();
-        int denominatorLength = data.getDenominator().length();
-        String firstLineOffset = getOffset((denominatorLength > numeratorLength)
-                ? Math.max(numeratorLength, subtrahendLength) - Math.min(numeratorLength, subtrahendLength)
-                : 0);
+    private void buildFirstThreeStrokes() {
+        String subtrahend = data.getSubtrahends().get(0).toString();
         String numerator = data.getNumerator().getString();
-        append(" ", numerator, firstLineOffset, "|", data.getDenominator().getString(), "\n");
+        String denominator = data.getDenominator().getString();
+        String firstLineOffset = getOffset((denominator.length() > numerator.length())
+                ? Math.max(numerator.length(), subtrahend.length()) - Math.min(numerator.length(), subtrahend.length())
+                : 0);
+        append(" ", numerator, firstLineOffset, "|", denominator, "\n");
         String answer = buildAnswer();
-        append("-", getOffset(numeratorLength), firstLineOffset,
-                "+", getLine(Math.max(answer.length(), denominatorLength)), "\n");
-        append(" ", subtrahend, getOffset(numeratorLength - subtrahendLength), "|", answer, "\n");
-        append(" ", getLine(subtrahendLength), "\n");
+        append("-", getOffset(numerator.length()), firstLineOffset,
+                "+", getLine(Math.max(answer.length(), denominator.length())), "\n");
+        append(" ", subtrahend, getOffset(numerator.length() - denominator.length()), "|", answer, "\n");
+        append(" ", getLine(subtrahend.length()), "\n");
     }
 
     private void append(String... strings) {

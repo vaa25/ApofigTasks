@@ -14,6 +14,7 @@ public class LongDivisionLauncher {
         run(40, 2);
         run(2, 40);
         run(2930, 24);
+        run(190, 4);
 
     }
 

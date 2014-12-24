@@ -7,6 +7,7 @@ import java.util.List;
  * @author Alexander Vlasov
  */
 class Data {
+    private final int ABSENT = -1;
     private List<Long> residuals = new ArrayList<>();
     private List<Long> minuends = new ArrayList<>();
     private List<Long> subtrahends = new ArrayList<>();
@@ -16,7 +17,6 @@ class Data {
     private int startPeriod;
     private SourceValue numerator;
     private SourceValue denominator;
-
     Data(double numerator, double denominator) {
         this.numerator = new SourceValue(numerator);
         this.denominator = new SourceValue(denominator);
@@ -35,6 +35,10 @@ class Data {
         return minuends;
     }
 
+    List<Long> getResiduals() {
+        return residuals;
+    }
+
     List<Long> getSubtrahends() {
         return subtrahends;
     }
@@ -51,71 +55,112 @@ class Data {
         return dotIndex;
     }
 
-    int getStartPeriod() {
+    int getStartPeriodIndex() {
         return startPeriod;
     }
 
     void calculate() {
-        dotIndex = -1;
-        startPeriod = -1;
+        dotIndex = ABSENT;
+        startPeriod = ABSENT;
         calculate1();
-        correctSomePeriodic();
+        correctFirstZero();
+        setOffsets();
+    }
+
+    private void correctFirstZero() {
+        if (answerParts.get(0) == 0 && (dotIndex > 1)) {
+            removeFirst(answerParts);
+            removeFirst(residuals);
+            removeFirst(minuends);
+            removeFirst(subtrahends);
+            dotIndex--;
+            if (hasIrrationalAnswer()) {
+                startPeriod--;
+            }
+        }
+    }
+
+    private void removeFirst(List list) {
+        list.remove(0);
+    }
+
+    boolean hasIrrationalAnswer() {
+        return startPeriod != ABSENT;
     }
 
     private void calculate1() {
-        int offset = 0;
-        long residual;
+
         int numberOfNumeratorDigit = SourceValue.getMinLength(numerator, denominator);
         long minuend = numerator.getFirstMinuend(denominator);
         do {
             long answerPart = minuend / denominator.getLong();
             long subtrahend = answerPart * denominator.getLong();
-            residual = minuend - subtrahend;
-            offset += getLengthOf(minuend) - getLengthOf(residual);
-            addValuesToLists(offset, minuend, answerPart, subtrahend);
-            minuend = numerator.getNextMinuend(numberOfNumeratorDigit, residual);
-            if (isFoundIrrationalAnswer(residual)) {
-                placePeriod(residual, minuend);
-                break;
+            long residual = minuend - subtrahend;
+            if (isIrrationalSymptomDetected(residual)) {
+                setPeriod(residual);
             }
-            residuals.add(residual);
-            placeDotIfNeed(numberOfNumeratorDigit);
+            minuend = getNextMinuend(numberOfNumeratorDigit, residual);
+            addValuesToLists(minuend, answerPart, subtrahend, residual);
+            if (isNeedDot(numberOfNumeratorDigit)) {
+                setDot();
+            }
             numberOfNumeratorDigit++;
-        } while (!isFoundRationalAnswer(residual) || !doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
+        } while (!hasIrrationalAnswer() && !hasRationalAnswer(numberOfNumeratorDigit));
     }
 
-    private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
-        return numberOfNumeratorDigit > numerator.length();
+    private boolean hasRationalAnswer(int numberOfNumeratorDigit) {
+        return (isRationalSymptomDetected() && doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
     }
 
-    private boolean isFoundRationalAnswer(long residual) {
-        return residual == 0;
-    }
-
-    private void addValuesToLists(int offset, long minuend, long answerPart, long subtrahend) {
-        subtrahends.add(subtrahend);
-        minuends.add(minuend);
-        answerParts.add(answerPart);
-        offsets.add(offset);
-    }
-
-    private void placeDotIfNeed(int numberOfNumeratorDigit) {
-        if (isNeedDot(numberOfNumeratorDigit)) {
-            dotIndex = answerParts.size();
+    private long getNextMinuend(int numberOfNumeratorDigit, long residual) {
+        if (hasIrrationalAnswer()) {
+            return residual;
+        } else {
+            return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
         }
     }
 
-    private void placePeriod(long residual, long minuend) {
+    private void setOffsets() {
+        int offset = 0;
+        offsets = new ArrayList<>();
+        for (int i = 0; i < residuals.size(); i++) {
+            offset += getLengthOf(minuends.get(i)) - getLengthOf(residuals.get(i));
+            System.out.println(minuends.get(i) + "\t" + residuals.get(i) + "\t" + offset);
+            offsets.add(offset);
+        }
+        return;
+    }
+
+    private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
+        return (numberOfNumeratorDigit > numerator.length());
+    }
+
+    boolean isRationalSymptomDetected() {
+        return (residuals.get(residuals.size() - 1) == 0);
+    }
+
+    private void addValuesToLists(long minuend, long answerPart, long subtrahend, long residual) {
+        subtrahends.add(subtrahend);
+        minuends.add(minuend);
+        answerParts.add(answerPart);
+        residuals.add(residual);
+    }
+
+    private void setDot() {
+        dotIndex = answerParts.size();
+    }
+
+    private void setPeriod(long residual) {
         startPeriod = residuals.lastIndexOf(residual) + 1;
-        minuends.add(minuend / 10);
+
     }
 
     private boolean isNeedDot(int numberOfNumeratorDigit) {
         return (!hasDot()) && (numberOfNumeratorDigit >= numerator.length());
     }
 
-    private boolean isFoundIrrationalAnswer(long residual) {
-        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex));
+    private boolean isIrrationalSymptomDetected(long residual) {
+        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
     }
 
     private int getLengthOf(long value) {
@@ -124,23 +169,7 @@ class Data {
 
 
     private boolean hasDot() {
-        return (dotIndex != -1);
+        return (dotIndex != ABSENT);
     }
-
-    private void correctSomePeriodic() {
-
-        // костыль для частного случая
-        if (startPeriod > 0
-                && startPeriod != dotIndex
-                && answerParts.get(startPeriod - 1).equals(answerParts.get(answerParts.size() - 1))) {
-            startPeriod--;
-            answerParts.remove(answerParts.size() - 1);
-            subtrahends.remove(subtrahends.size() - 1);
-            minuends.remove(minuends.size() - 1);
-            minuends.set(minuends.size() - 1, minuends.get(minuends.size() - 1) / 10);
-            offsets.remove(offsets.size() - 1);
-        }
-    }
-
 
 }

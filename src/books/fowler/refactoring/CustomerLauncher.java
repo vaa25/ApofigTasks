@@ -20,7 +20,6 @@ public class CustomerLauncher {
     public static void rentMovies(Customer customer) {
         for (int i = 0; i < movies.size(); i++) {
             customer.addRental(new Rental(movies.get(i), i));
-
         }
     }
 
