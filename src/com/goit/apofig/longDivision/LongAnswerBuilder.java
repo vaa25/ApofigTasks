@@ -15,7 +15,7 @@ class LongAnswerBuilder {
 
     String buildLongAnswer() {
         result = new StringBuilder();
-        buildFirstThreeStrokes();
+        buildFirstFourStrokes();
         buildLastResidual(buildCascades());
         return result.toString();
     }
@@ -78,7 +78,7 @@ class LongAnswerBuilder {
         append(offset, " ", value, "\n");
     }
 
-    private void buildFirstThreeStrokes() {
+    private void buildFirstFourStrokes() {
         String subtrahend = data.getSubtrahends().get(0).toString();
         String numerator = data.getNumerator().getString();
         String denominator = data.getDenominator().getString();
