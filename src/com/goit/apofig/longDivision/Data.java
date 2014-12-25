@@ -18,11 +18,13 @@ class Data {
     private List<AnswerPart> answerParts = new ArrayList<>();
     private int dotIndex;
     private int startPeriod;
-    private SourceValue numerator;
+    //    private SourceValue numerator;
+    private Numerator numerator;
     private SourceValue denominator;
 
     Data(double numerator, double denominator) {
-        this.numerator = new SourceValue(numerator);
+//        this.numerator = new SourceValue(numerator);
+        this.numerator = new Numerator(numerator);
         this.denominator = new SourceValue(denominator);
         SourceValue.cast(this.numerator, this.denominator);
     }
@@ -157,9 +159,9 @@ class Data {
         }
     }
 
-    private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
-        return (numberOfNumeratorDigit > numerator.length());
-    }
+//    private boolean doesAllNumeratorDigitsWereInWork(int numberOfNumeratorDigit) {
+//        return (numberOfNumeratorDigit > numerator.length());
+//    }
 
     //    boolean isRationalSymptomDetected() {
 //        return (residuals.get(residuals.size() - 1) == 0);

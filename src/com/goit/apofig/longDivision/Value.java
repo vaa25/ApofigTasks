@@ -16,8 +16,8 @@ public class Value {
         return valueLong;
     }
 
-    public String getValueString() {
-        return valueString;
+    public int length() {
+        return valueString.length();
     }
 
     @Override

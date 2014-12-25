@@ -4,11 +4,11 @@ package com.goit.apofig.longDivision;
  * @author Alexander Vlasov
  */
 public class SourceValue {
-    private static final int TEN = 10;
-    private long valueLong;
-    private String valueString;
+    protected static final int TEN = 10;
+    protected long valueLong;
+    protected String valueString;
+    protected int digitCounter;
     private double valueOrig;
-    private int digitCounter;
     public SourceValue(double valueOrig) {
         this.valueOrig = valueOrig;
     }
@@ -46,38 +46,21 @@ public class SourceValue {
         valueLong = ((Double) valueOrig).longValue();
     }
 
-    long getDigit(int index) {
-        return Long.valueOf(valueString.substring(index, index + 1));
-    }
-
     int length() {
         return valueString.length();
     }
 
-    long getFirstDigits(int to) {
-        return Long.valueOf(valueString.substring(0, to));
-    }
-//
+    //
 //    long getFirstMinuend(SourceValue denominator) {
 //        return ((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getValueLong());
-//    }
-
-    Minuend getFirstMinuend(SourceValue denominator) {
-        return new Minuend((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getValueLong());
-    }
-
 //    long getNextMinuend(int numberOfNumeratorDigit, long residual) {
 //        return (numberOfNumeratorDigit >= length())
 //                ? residual * TEN
 //                : residual * TEN + getDigit(numberOfNumeratorDigit);
-//    }
-
 //    Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
 //        return (numberOfNumeratorDigit >= length())
 //                ? new Minuend(residual.getValueLong() * TEN)
 //                : new Minuend(residual.getValueLong() * TEN + getDigit(numberOfNumeratorDigit));
-//    }
-
     public long getValueLong() {
         return valueLong;
     }
@@ -86,26 +69,5 @@ public class SourceValue {
         return valueString;
     }
 
-    public void setDigitCounter(SourceValue denominator) {
-        digitCounter = getMinLength(this, denominator);
-    }
 
-    public Minuend getNextMinuend(Residual residual) {
-        return (digitCounter >= length())
-                ? new Minuend(residual.getValueLong() * TEN)
-                : new Minuend(residual.getValueLong() * TEN + getDigit(digitCounter));
-    }
-
-    public boolean isNeedDot() {
-        return (digitCounter >= length());
-
-    }
-
-    public boolean doesAllNumeratorDigitsWereInWork() {
-        return (digitCounter > length());
-    }
-
-    public void increaseDigitCounter() {
-        digitCounter++;
-    }
 }
