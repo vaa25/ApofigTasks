@@ -24,7 +24,7 @@ class LongAnswerBuilder {
             String subtrahend = data.getSubtrahends().get(i).toString();
             String minuend = data.getMinuends().get(i - 1).toString();
             if (!"0".equals(subtrahend)) {
-                buildCascade(subtrahend, minuend, getOffset(offset));
+                buildCascade(subtrahend, minuend, OffsetBuilder.getOffset(offset));
             }
             offset += (minuend.length() - data.getResiduals().get(i).length());
         }
@@ -32,7 +32,7 @@ class LongAnswerBuilder {
     }
 
     private void buildLastResidual(int lastOffsetIndex) {
-        append(getOffset(lastOffsetIndex + 1));
+        append(OffsetBuilder.getOffset(lastOffsetIndex + 1));
         if (data.hasIrrationalAnswer()) {
             append(data.getResiduals().getLast().toString());
         } else if (data.isRationalSymptomDetected()) {
@@ -41,7 +41,7 @@ class LongAnswerBuilder {
     }
 
     private void buildCascade(String subtrahend, String minuend, String offset) {
-        String offset2 = offset + " " + getOffset(minuend.length() - subtrahend.length());
+        String offset2 = offset + " " + OffsetBuilder.getOffset(minuend.length() - subtrahend.length());
         buildMenuend(offset, minuend);
         buildMinus(offset);
         buildSubtrahend(offset2, subtrahend);
@@ -49,15 +49,7 @@ class LongAnswerBuilder {
     }
 
     private void buildLine(String offset, int length) {
-        append(offset, getLine(length), "\n");
-    }
-
-    private String getOffset(int length) {
-        return getCharOffset(length, ' ');
-    }
-
-    private String getLine(int length) {
-        return getCharOffset(length, '-');
+        append(offset, OffsetBuilder.getLine(length), "\n");
     }
 
     private void buildSubtrahend(String offset, String value) {
@@ -76,30 +68,21 @@ class LongAnswerBuilder {
         String subtrahend = data.getSubtrahends().get(0).toString();
         String numerator = data.getNumerator().getString();
         String denominator = data.getDenominator().getString();
-        String firstLineOffset = getOffset((denominator.length() > numerator.length())
+        String firstLineOffset = OffsetBuilder.getOffset((denominator.length() > numerator.length())
                 ? Math.max(numerator.length(), subtrahend.length()) - Math.min(numerator.length(), subtrahend.length())
                 : 0);
         append(" ", numerator, firstLineOffset, "|", denominator, "\n");
         String answer = new AnswerBuilder(data).buildAnswer();
-        append("-", getOffset(numerator.length()), firstLineOffset,
-                "+", getLine(Math.max(answer.length(), denominator.length())), "\n");
+        append("-", OffsetBuilder.getOffset(numerator.length()), firstLineOffset,
+                "+", OffsetBuilder.getLine(Math.max(answer.length(), denominator.length())), "\n");
         append(" ", subtrahend);
-        append(getOffset(numerator.length() - data.getSubtrahends().get(0).length()), "|", answer, "\n");
-        append(" ", getLine(subtrahend.length()), "\n");
+        append(OffsetBuilder.getOffset(numerator.length() - data.getSubtrahends().get(0).length()), "|", answer, "\n");
+        append(" ", OffsetBuilder.getLine(subtrahend.length()), "\n");
     }
 
     private void append(String... strings) {
         for (String s : strings) {
             result.append(s);
         }
-    }
-
-    private String getCharOffset(int i, char value) {
-        StringBuilder result = new StringBuilder();
-
-        for (int j = 0; j < i; j++) {
-            result.append(value);
-        }
-        return result.toString();
     }
 }
