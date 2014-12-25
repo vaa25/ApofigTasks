@@ -4,13 +4,15 @@ package com.goit.apofig.longDivision;
  * @author Alexander Vlasov
  */
 public class SourceValue {
+    private static final int TEN = 10;
     private long valueLong;
     private String valueString;
     private double valueOrig;
-
+    private int digitCounter;
     public SourceValue(double valueOrig) {
         this.valueOrig = valueOrig;
     }
+
 
     static void cast(SourceValue value1, SourceValue value2) {
         String decimalPart1 = Double.toString(value1.valueOrig).split("\\.")[1];
@@ -19,8 +21,8 @@ public class SourceValue {
         if ((!"0".equals(decimalPart1)) || (!"0".equals(decimalPart2))) {
             int koef = Math.max(decimalPart1.length(), decimalPart2.length());
             for (int i = 0; i < koef; i++) {
-                value1.valueOrig *= 10;
-                value2.valueOrig *= 10;
+                value1.valueOrig *= TEN;
+                value2.valueOrig *= TEN;
             }
         }
         value1.cast();
@@ -55,18 +57,28 @@ public class SourceValue {
     long getFirstDigits(int to) {
         return Long.valueOf(valueString.substring(0, to));
     }
+//
+//    long getFirstMinuend(SourceValue denominator) {
+//        return ((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getValueLong());
+//    }
 
-    long getFirstMinuend(SourceValue denominator) {
-        return ((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getLong());
+    Minuend getFirstMinuend(SourceValue denominator) {
+        return new Minuend((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getValueLong());
     }
 
-    long getNextMinuend(int numberOfNumeratorDigit, long residual) {
+//    long getNextMinuend(int numberOfNumeratorDigit, long residual) {
+//        return (numberOfNumeratorDigit >= length())
+//                ? residual * TEN
+//                : residual * TEN + getDigit(numberOfNumeratorDigit);
+//    }
+
+    Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
         return (numberOfNumeratorDigit >= length())
-                ? residual * 10
-                : residual * 10 + getDigit(numberOfNumeratorDigit);
+                ? new Minuend(residual.getValueLong() * TEN)
+                : new Minuend(residual.getValueLong() * TEN + getDigit(numberOfNumeratorDigit));
     }
 
-    public long getLong() {
+    public long getValueLong() {
         return valueLong;
     }
 

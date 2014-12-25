@@ -8,10 +8,14 @@ import java.util.List;
  */
 class Data {
     private final int ABSENT = -1;
-    private List<Long> residuals = new ArrayList<>();
-    private List<Long> minuends = new ArrayList<>();
-    private List<Long> subtrahends = new ArrayList<>();
-    private List<Long> answerParts = new ArrayList<>();
+    //    private List<Long> residuals = new ArrayList<>();
+//    private List<Long> minuends = new ArrayList<>();
+//    private List<Long> subtrahends = new ArrayList<>();
+//    private List<Long> answerParts = new ArrayList<>();
+    private List<Residual> residuals = new ArrayList<>();
+    private List<Minuend> minuends = new ArrayList<>();
+    private List<Subtrahend> subtrahends = new ArrayList<>();
+    private List<AnswerPart> answerParts = new ArrayList<>();
     private int dotIndex;
     private int startPeriod;
     private SourceValue numerator;
@@ -31,19 +35,34 @@ class Data {
         return denominator;
     }
 
-    List<Long> getMinuends() {
+    //    List<Long> getMinuends() {
+//        return minuends;
+//    }
+//
+//    List<Long> getResiduals() {
+//        return residuals;
+//    }
+//
+//    List<Long> getSubtrahends() {
+//        return subtrahends;
+//    }
+//
+//    List<Long> getAnswerParts() {
+//        return answerParts;
+//    }
+    List<Minuend> getMinuends() {
         return minuends;
     }
 
-    List<Long> getResiduals() {
+    List<Residual> getResiduals() {
         return residuals;
     }
 
-    List<Long> getSubtrahends() {
+    List<Subtrahend> getSubtrahends() {
         return subtrahends;
     }
 
-    List<Long> getAnswerParts() {
+    List<AnswerPart> getAnswerParts() {
         return answerParts;
     }
 
@@ -63,7 +82,8 @@ class Data {
     }
 
     private void correctFirstZero() {
-        if (answerParts.get(0) == 0 && (dotIndex > 1)) {
+        if (answerParts.get(0).getValueLong() == 0 && (dotIndex > 1)) {
+//        if (answerParts.get(0) == 0 && (dotIndex > 1)) {
             answerParts.remove(0);
             residuals.remove(0);
             minuends.remove(0);
@@ -82,11 +102,15 @@ class Data {
     private void calculate1() {
 
         int numberOfNumeratorDigit = SourceValue.getMinLength(numerator, denominator);
-        long minuend = numerator.getFirstMinuend(denominator);
+        Minuend minuend = numerator.getFirstMinuend(denominator);
+//        long minuend = numerator.getFirstMinuend(denominator);
         do {
-            long answerPart = minuend / denominator.getLong();
-            long subtrahend = answerPart * denominator.getLong();
-            long residual = minuend - subtrahend;
+            AnswerPart answerPart = new AnswerPart(minuend, denominator);
+//            long answerPart = minuend / denominator.getValueLong();
+            Subtrahend subtrahend = new Subtrahend(answerPart, denominator);
+//            long subtrahend = answerPart * denominator.getValueLong();
+            Residual residual = new Residual(minuend, subtrahend);
+//            long residual = minuend - subtrahend;
             if (isIrrationalSymptomDetected(residual)) {
                 setPeriod(residual);
             }
@@ -103,9 +127,16 @@ class Data {
         return (isRationalSymptomDetected() && doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
     }
 
-    private long getNextMinuend(int numberOfNumeratorDigit, long residual) {
+    //    private long getNextMinuend(int numberOfNumeratorDigit, long residual) {
+//        if (hasIrrationalAnswer()) {
+//            return residual;
+//        } else {
+//            return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
+//        }
+//    }
+    private Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
         if (hasIrrationalAnswer()) {
-            return residual;
+            return new Minuend(residual.getValueLong());
         } else {
             return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
         }
@@ -115,22 +146,35 @@ class Data {
         return (numberOfNumeratorDigit > numerator.length());
     }
 
+    //    boolean isRationalSymptomDetected() {
+//        return (residuals.get(residuals.size() - 1) == 0);
+//    }
     boolean isRationalSymptomDetected() {
-        return (residuals.get(residuals.size() - 1) == 0);
+        return (residuals.get(residuals.size() - 1).getValueLong() == 0);
     }
 
-    private void addValuesToLists(long minuend, long answerPart, long subtrahend, long residual) {
+//    private void addValuesToLists(long minuend, long answerPart, long subtrahend, long residual) {
+//        subtrahends.add(subtrahend);
+//        minuends.add(minuend);
+//        answerParts.add(answerPart);
+//        residuals.add(residual);
+//    }
+
+    private void addValuesToLists(Minuend minuend, AnswerPart answerPart, Subtrahend subtrahend, Residual residual) {
         subtrahends.add(subtrahend);
         minuends.add(minuend);
         answerParts.add(answerPart);
         residuals.add(residual);
     }
-
     private void setDot() {
         dotIndex = answerParts.size();
     }
 
-    private void setPeriod(long residual) {
+    //    private void setPeriod(long residual) {
+//        startPeriod = residuals.lastIndexOf(residual) + 1;
+//
+//    }
+    private void setPeriod(Residual residual) {
         startPeriod = residuals.lastIndexOf(residual) + 1;
 
     }
@@ -139,7 +183,10 @@ class Data {
         return (!hasDot()) && (numberOfNumeratorDigit >= numerator.length());
     }
 
-    private boolean isIrrationalSymptomDetected(long residual) {
+    //    private boolean isIrrationalSymptomDetected(long residual) {
+//        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
+//    }
+    private boolean isIrrationalSymptomDetected(Residual residual) {
         return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
     }
 
