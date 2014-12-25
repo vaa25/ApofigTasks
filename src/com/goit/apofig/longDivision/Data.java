@@ -102,6 +102,7 @@ class Data {
     private void calculate1() {
 
         int numberOfNumeratorDigit = SourceValue.getMinLength(numerator, denominator);
+        numerator.setDigitCounter(denominator);
         Minuend minuend = numerator.getFirstMinuend(denominator);
 //        long minuend = numerator.getFirstMinuend(denominator);
         do {
@@ -114,17 +115,24 @@ class Data {
             if (isIrrationalSymptomDetected(residual)) {
                 setPeriod(residual);
             }
-            minuend = getNextMinuend(numberOfNumeratorDigit, residual);
+//            minuend = getNextMinuend(numberOfNumeratorDigit, residual);
+            minuend = getNextMinuend(residual);
             addValuesToLists(minuend, answerPart, subtrahend, residual);
-            if (isNeedDot(numberOfNumeratorDigit)) {
+//            if (isNeedDot(numberOfNumeratorDigit)) {
+            if (isNeedDot()) {
                 setDot();
             }
             numberOfNumeratorDigit++;
-        } while (!hasIrrationalAnswer() && !hasRationalAnswer(numberOfNumeratorDigit));
+            numerator.increaseDigitCounter();
+        } while (!hasIrrationalAnswer() && !hasRationalAnswer());
+//        } while (!hasIrrationalAnswer() && !hasRationalAnswer(numberOfNumeratorDigit));
     }
 
-    private boolean hasRationalAnswer(int numberOfNumeratorDigit) {
-        return (isRationalSymptomDetected() && doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
+    //    private boolean hasRationalAnswer(int numberOfNumeratorDigit) {
+//        return (isRationalSymptomDetected() && doesAllNumeratorDigitsWereInWork(numberOfNumeratorDigit));
+//    }
+    private boolean hasRationalAnswer() {
+        return (isRationalSymptomDetected() && numerator.doesAllNumeratorDigitsWereInWork());
     }
 
     //    private long getNextMinuend(int numberOfNumeratorDigit, long residual) {
@@ -134,11 +142,18 @@ class Data {
 //            return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
 //        }
 //    }
-    private Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
+//    private Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
+//        if (hasIrrationalAnswer()) {
+//            return new Minuend(residual.getValueLong());
+//        } else {
+//            return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
+//        }
+//    }
+    private Minuend getNextMinuend(Residual residual) {
         if (hasIrrationalAnswer()) {
             return new Minuend(residual.getValueLong());
         } else {
-            return numerator.getNextMinuend(numberOfNumeratorDigit, residual);
+            return numerator.getNextMinuend(residual);
         }
     }
 
@@ -179,8 +194,11 @@ class Data {
 
     }
 
-    private boolean isNeedDot(int numberOfNumeratorDigit) {
-        return (!hasDot()) && (numberOfNumeratorDigit >= numerator.length());
+    //    private boolean isNeedDot(int numberOfNumeratorDigit) {
+//        return (!hasDot()) && (numberOfNumeratorDigit >= numerator.length());
+//    }
+    private boolean isNeedDot() {
+        return (!hasDot()) && (numerator.isNeedDot());
     }
 
     //    private boolean isIrrationalSymptomDetected(long residual) {

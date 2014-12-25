@@ -72,11 +72,11 @@ public class SourceValue {
 //                : residual * TEN + getDigit(numberOfNumeratorDigit);
 //    }
 
-    Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
-        return (numberOfNumeratorDigit >= length())
-                ? new Minuend(residual.getValueLong() * TEN)
-                : new Minuend(residual.getValueLong() * TEN + getDigit(numberOfNumeratorDigit));
-    }
+//    Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
+//        return (numberOfNumeratorDigit >= length())
+//                ? new Minuend(residual.getValueLong() * TEN)
+//                : new Minuend(residual.getValueLong() * TEN + getDigit(numberOfNumeratorDigit));
+//    }
 
     public long getValueLong() {
         return valueLong;
@@ -84,5 +84,28 @@ public class SourceValue {
 
     public String getString() {
         return valueString;
+    }
+
+    public void setDigitCounter(SourceValue denominator) {
+        digitCounter = getMinLength(this, denominator);
+    }
+
+    public Minuend getNextMinuend(Residual residual) {
+        return (digitCounter >= length())
+                ? new Minuend(residual.getValueLong() * TEN)
+                : new Minuend(residual.getValueLong() * TEN + getDigit(digitCounter));
+    }
+
+    public boolean isNeedDot() {
+        return (digitCounter >= length());
+
+    }
+
+    public boolean doesAllNumeratorDigitsWereInWork() {
+        return (digitCounter > length());
+    }
+
+    public void increaseDigitCounter() {
+        digitCounter++;
     }
 }
