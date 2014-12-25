@@ -7,7 +7,7 @@ public class SourceValue {
     protected static final int TEN = 10;
     protected long valueLong;
     protected String valueString;
-    protected int digitCounter;
+
     private double valueOrig;
     public SourceValue(double valueOrig) {
         this.valueOrig = valueOrig;
