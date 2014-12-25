@@ -1,9 +1,10 @@
 package books.fowler.refactoring;
 
+import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CustomerTest {
+public class CustomerTest extends TestCase {
     private Customer customer;
 
     @Before

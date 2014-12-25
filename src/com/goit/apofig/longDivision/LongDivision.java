@@ -23,8 +23,8 @@ public class LongDivision {
         return "Call calculate(numerator, denominator) first";
     }
 
-    public void calculate(double d1, double d2) {
-        Data data = new Data(d1, d2);
+    public void calculate(double numerator, double denominator) {
+        Data data = new Data(numerator, denominator);
         data.calculate();
         answer = new AnswerBuilder(data).buildAnswer();
         longAnswer = new LongAnswerBuilder(data).buildLongAnswer();

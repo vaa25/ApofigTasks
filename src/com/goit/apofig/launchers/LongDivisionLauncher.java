@@ -18,9 +18,9 @@ public class LongDivisionLauncher {
 
     }
 
-    static void run(double d1, double d2) {
+    static void run(double numerator, double denominator) {
         LongDivision longDivision = new LongDivision();
-        longDivision.calculate(d1, d2);
+        longDivision.calculate(numerator, denominator);
         System.out.println(longDivision.getLongAnswer());
     }
 }
