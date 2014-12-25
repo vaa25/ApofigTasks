@@ -26,7 +26,7 @@ class LongAnswerBuilder {
             if (!"0".equals(subtrahend)) {
                 buildCascade(subtrahend, minuend, getOffset(offset));
             }
-            offset += (minuend.length() - data.getResiduals().get(i).toString().length());
+            offset += (minuend.length() - data.getResiduals().get(i).length());
         }
         return offset;
     }
@@ -34,7 +34,7 @@ class LongAnswerBuilder {
     private void buildLastResidual(int lastOffsetIndex) {
         append(getOffset(lastOffsetIndex + 1));
         if (data.hasIrrationalAnswer()) {
-            append(data.getResiduals().get(data.getResiduals().size() - 1).toString());
+            append(data.getResiduals().getLast().toString());
         } else if (data.isRationalSymptomDetected()) {
             append("0");
         }
@@ -84,7 +84,7 @@ class LongAnswerBuilder {
         append("-", getOffset(numerator.length()), firstLineOffset,
                 "+", getLine(Math.max(answer.length(), denominator.length())), "\n");
         append(" ", subtrahend);
-        append(getOffset(numerator.length() - data.getSubtrahends().get(0).toString().length()), "|", answer, "\n");
+        append(getOffset(numerator.length() - data.getSubtrahends().get(0).length()), "|", answer, "\n");
         append(" ", getLine(subtrahend.length()), "\n");
     }
 

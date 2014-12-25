@@ -7,8 +7,8 @@ public class SourceValue {
     protected static final int TEN = 10;
     protected long valueLong;
     protected String valueString;
-
     private double valueOrig;
+
     public SourceValue(double valueOrig) {
         this.valueOrig = valueOrig;
     }
@@ -50,17 +50,6 @@ public class SourceValue {
         return valueString.length();
     }
 
-    //
-//    long getFirstMinuend(SourceValue denominator) {
-//        return ((denominator.length() < length()) ? getFirstDigits(denominator.length()) : getValueLong());
-//    long getNextMinuend(int numberOfNumeratorDigit, long residual) {
-//        return (numberOfNumeratorDigit >= length())
-//                ? residual * TEN
-//                : residual * TEN + getDigit(numberOfNumeratorDigit);
-//    Minuend getNextMinuend(int numberOfNumeratorDigit, Residual residual) {
-//        return (numberOfNumeratorDigit >= length())
-//                ? new Minuend(residual.getValueLong() * TEN)
-//                : new Minuend(residual.getValueLong() * TEN + getDigit(numberOfNumeratorDigit));
     public long getValueLong() {
         return valueLong;
     }
