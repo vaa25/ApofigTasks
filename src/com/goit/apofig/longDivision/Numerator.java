@@ -4,8 +4,10 @@ package com.goit.apofig.longDivision;
  * @author Alexander Vlasov
  */
 public class Numerator extends SourceValue {
+
     private int digitCounter;
-    public Numerator(double valueOrig) {
+
+    Numerator(double valueOrig) {
         super(valueOrig);
     }
 

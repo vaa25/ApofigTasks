@@ -66,8 +66,8 @@ class LongAnswerBuilder {
 
     private void buildFirstFourStrokes() {
         String subtrahend = data.getSubtrahends().get(0).toString();
-        String numerator = data.getNumerator().getString();
-        String denominator = data.getDenominator().getString();
+        String numerator = data.getNumerator().toString();
+        String denominator = data.getDenominator().toString();
         String firstLineOffset = OffsetBuilder.getOffset((denominator.length() > numerator.length())
                 ? Math.max(numerator.length(), subtrahend.length()) - Math.min(numerator.length(), subtrahend.length())
                 : 0);

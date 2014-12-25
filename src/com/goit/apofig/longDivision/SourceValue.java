@@ -9,7 +9,7 @@ public class SourceValue {
     protected String valueString;
     private double valueOrig;
 
-    public SourceValue(double valueOrig) {
+    SourceValue(double valueOrig) {
         this.valueOrig = valueOrig;
     }
 
@@ -50,11 +50,11 @@ public class SourceValue {
         return valueString.length();
     }
 
-    public long getValueLong() {
+    long getValueLong() {
         return valueLong;
     }
 
-    public String getString() {
+    public String toString() {
         return valueString;
     }
 

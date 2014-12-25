@@ -110,7 +110,6 @@ class Data {
 
     boolean isRationalSymptomDetected() {
         return (residuals.isLastZero());
-//        return (residuals.get(residuals.size() - 1).getValueLong() == 0);
     }
 
     private void addValuesToLists(Minuend minuend, AnswerPart answerPart, Subtrahend subtrahend, Residual residual) {
