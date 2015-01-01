@@ -98,15 +98,20 @@ class Data {
         numerator.setDigitCounter(denominator);
         Minuend minuend = numerator.getFirstMinuend(denominator);
         do {
-            AnswerPart answerPart = new AnswerPart(minuend, denominator);
-            Subtrahend subtrahend = new Subtrahend(answerPart, denominator);
-            Residual residual = new Residual(minuend, subtrahend);
-            setPeriodIfNeed(residual);
-            minuend = getNextMinuend(residual);
-            addValuesToLists(minuend, answerPart, subtrahend, residual);
-            setDotIfNeed();
-            numerator.increaseDigitCounter();
+            minuend = calculateCascade(minuend);
         } while (!hasIrrationalAnswer() && !hasRationalAnswer());
+    }
+
+    private Minuend calculateCascade(Minuend minuend) {
+        AnswerPart answerPart = new AnswerPart(minuend, denominator);
+        Subtrahend subtrahend = new Subtrahend(answerPart, denominator);
+        Residual residual = new Residual(minuend, subtrahend);
+        setPeriodIfNeed(residual);
+        minuend = getNextMinuend(residual);
+        addValuesToLists(minuend, answerPart, subtrahend, residual);
+        setDotIfNeed();
+        numerator.increaseDigitCounter();
+        return minuend;
     }
 
     private void setDotIfNeed() {
