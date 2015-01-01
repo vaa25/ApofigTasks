@@ -13,11 +13,11 @@ public class OffsetBuilder {
         return getCharOffset(length, ' ');
     }
 
-    private static String getCharOffset(int i, char value) {
+    private static String getCharOffset(int length, char symbol) {
         StringBuilder result = new StringBuilder();
 
-        for (int j = 0; j < i; j++) {
-            result.append(value);
+        for (int j = 0; j < length; j++) {
+            result.append(symbol);
         }
         return result.toString();
     }

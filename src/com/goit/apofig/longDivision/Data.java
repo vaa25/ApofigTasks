@@ -77,23 +77,30 @@ class Data {
     }
 
     private void calculate1() {
-
         numerator.setDigitCounter(denominator);
         Minuend minuend = numerator.getFirstMinuend(denominator);
         do {
             AnswerPart answerPart = new AnswerPart(minuend, denominator);
             Subtrahend subtrahend = new Subtrahend(answerPart, denominator);
             Residual residual = new Residual(minuend, subtrahend);
-            if (isIrrationalSymptomDetected(residual)) {
-                setPeriod(residual);
-            }
+            setPeriodIfNeed(residual);
             minuend = getNextMinuend(residual);
             addValuesToLists(minuend, answerPart, subtrahend, residual);
-            if (isNeedDot()) {
-                setDot();
-            }
+            setDotIfNeed();
             numerator.increaseDigitCounter();
         } while (!hasIrrationalAnswer() && !hasRationalAnswer());
+    }
+
+    private void setDotIfNeed() {
+        if (isNeedDot()) {
+            setDot();
+        }
+    }
+
+    private void setPeriodIfNeed(Residual residual) {
+        if (isIrrationalSymptomDetected(residual)) {
+            setPeriod(residual);
+        }
     }
 
     private boolean hasRationalAnswer() {
