@@ -20,7 +20,7 @@ class Data {
         SourceValue.cast(this.numerator, this.denominator);
     }
 
-    public SourceValue getNumerator() {
+    public Numerator getNumerator() {
         return numerator;
     }
 
