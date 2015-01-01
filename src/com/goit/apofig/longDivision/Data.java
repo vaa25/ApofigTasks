@@ -56,20 +56,38 @@ class Data {
         dotIndex = ABSENT;
         startPeriod = ABSENT;
         calculate1();
-        correctFirstZero();
+        correctUnnecessaryFirstZero();
     }
 
-    private void correctFirstZero() {
-        if (answerParts.get(0).getValueLong() == 0 && (dotIndex > 1)) {
-            answerParts.removeFirst();
-            residuals.removeFirst();
-            minuends.removeFirst();
-            subtrahends.removeFirst();
-            dotIndex--;
-            if (hasIrrationalAnswer()) {
-                startPeriod--;
-            }
+    private void correctUnnecessaryFirstZero() {
+        if (hasUnnecessaryFirstZero()) {
+            removeUnnecessaryFirstZeroData();
         }
+    }
+
+    private void removeUnnecessaryFirstZeroData() {
+        answerParts.removeFirst();
+        residuals.removeFirst();
+        minuends.removeFirst();
+        subtrahends.removeFirst();
+        moveDotIndexLeftIfNeed();
+        moveStartPeriodLeftIfNeed();
+    }
+
+    private void moveDotIndexLeftIfNeed() {
+        if (hasDot()) {
+            dotIndex--;
+        }
+    }
+
+    private void moveStartPeriodLeftIfNeed() {
+        if (hasIrrationalAnswer()) {
+            startPeriod--;
+        }
+    }
+
+    private boolean hasUnnecessaryFirstZero() {
+        return answerParts.get(0).getValueLong() == 0 && (dotIndex > 1);
     }
 
     boolean hasIrrationalAnswer() {

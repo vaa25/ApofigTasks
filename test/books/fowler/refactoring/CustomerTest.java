@@ -42,7 +42,7 @@ public class CustomerTest extends TestCase {
 
     @Test
     public void testHtmlStatement() throws Exception {
-        String example = "<H1>Операции аренды для <EM>Alexander</EM></H1><P>\n" +
+        String[] example = ("<H1>Операции аренды для <EM>Alexander</EM></H1><P>\n" +
                 "Lost: 2.0<BR>\n" +
                 "Elementary: 3.0<BR>\n" +
                 "Forever: 6.0<BR>\n" +
@@ -52,17 +52,24 @@ public class CustomerTest extends TestCase {
                 "Grimm: 6.0<BR>\n" +
                 "Battleship Galaxy: 9.5<BR>\n" +
                 "<P>Ваша задолженность составляет <EM>53.5</EM><P>\n" +
-                "На этой аренде вы заработали <EM>11</EM> очков за активность<P>";
-        String result = customer.htmlStatement();
-        if (!example.equals(result)) {
-            System.out.println("Failed!!!!!! \n");
-            System.out.println("Example: \n");
-            System.out.println(example);
-            System.out.println();
-            System.out.println("Reality: \n");
-            System.out.println(result);
-        } else {
-            System.out.println("Well done!!!");
+                "На этой аренде вы заработали <EM>11</EM> очков за активность<P>").split("\\n");
+        assertNotNull(customer.htmlStatement());
+        String[] result = customer.htmlStatement().split("\\n");
+        assertEqualsArray(example, result);
+    }
+
+    private void assertEqualsArray(String[] example, String[] result) {
+        assertEqualsArrayLength(example, result);
+        assertEqualsArrayBody(example, result);
+    }
+
+    private void assertEqualsArrayLength(String[] example, String[] result) {
+        assertEquals(example.length, result.length);
+    }
+
+    private void assertEqualsArrayBody(String[] example, String[] result) {
+        for (int i = 0; i < example.length; i++) {
+            assertEquals(example[i], result[i]);
         }
     }
 }
