@@ -14,8 +14,12 @@ import org.junit.Test;
 public class DataTest extends TestCase {
     @Test
     public void testData() throws Exception {
+        Numerator numerator = new Numerator(2930);
+        SourceValue denominator = new SourceValue(2.45);
+        SourceValue.cast(numerator, denominator);
         Data data = new Data(2930, 2.45);
-        assertEquals(new Numerator(2930), data.getNumerator());
+        assertEquals(numerator, data.getNumerator());
+        assertEquals(denominator, data.getDenominator());
     }
 
     @Test

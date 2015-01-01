@@ -65,14 +65,21 @@ public class SourceValue {
 
         SourceValue that = (SourceValue) o;
 
+        if (valueLong != that.valueLong) return false;
         if (Double.compare(that.valueOrig, valueOrig) != 0) return false;
+        if (!valueString.equals(that.valueString)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        long temp = Double.doubleToLongBits(valueOrig);
-        return (int) (temp ^ (temp >>> 32));
+        int result;
+        long temp;
+        result = (int) (valueLong ^ (valueLong >>> 32));
+        result = 31 * result + valueString.hashCode();
+        temp = Double.doubleToLongBits(valueOrig);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }
