@@ -120,14 +120,38 @@ class Data {
         }
     }
 
+    private boolean isNeedDot() {
+        return (!hasDot()) && (numerator.isNeedDot());
+    }
+
+    private boolean hasDot() {
+        return (dotIndex != ABSENT);
+    }
+
+    private void setDot() {
+        dotIndex = answerParts.size();
+    }
+
     private void setPeriodIfNeed(Residual residual) {
         if (isIrrationalSymptomDetected(residual)) {
             setPeriod(residual);
         }
     }
 
+    private boolean isIrrationalSymptomDetected(Residual residual) {
+        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
+    }
+
+    private void setPeriod(Residual residual) {
+        startPeriod = residuals.lastIndexOf(residual) + 1;
+    }
+
     private boolean hasRationalAnswer() {
         return (isRationalSymptomDetected() && numerator.doesAllNumeratorDigitsWereInWork());
+    }
+
+    boolean isRationalSymptomDetected() {
+        return (residuals.isLastZero());
     }
 
     private Minuend getNextMinuend(Residual residual) {
@@ -138,34 +162,11 @@ class Data {
         }
     }
 
-    boolean isRationalSymptomDetected() {
-        return (residuals.isLastZero());
-    }
-
     private void addValuesToLists(Minuend minuend, AnswerPart answerPart, Subtrahend subtrahend, Residual residual) {
         subtrahends.add(subtrahend);
         minuends.add(minuend);
         answerParts.add(answerPart);
         residuals.add(residual);
-    }
-    private void setDot() {
-        dotIndex = answerParts.size();
-    }
-
-    private void setPeriod(Residual residual) {
-        startPeriod = residuals.lastIndexOf(residual) + 1;
-    }
-
-    private boolean isNeedDot() {
-        return (!hasDot()) && (numerator.isNeedDot());
-    }
-
-    private boolean isIrrationalSymptomDetected(Residual residual) {
-        return (hasDot() && (residuals.lastIndexOf(residual) >= dotIndex - 1));
-    }
-
-    private boolean hasDot() {
-        return (dotIndex != ABSENT);
     }
 
 }

@@ -3,14 +3,6 @@ package com.goit.apofig.longDivision;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-/**
- * run(2930, 2.45);
- * run(4, 2);
- * run(40, 2);
- * run(2, 40);
- * run(2930, 24);
- * run(190, 4);
- */
 public class DataTest extends TestCase {
     private final int ABSENT = Data.ABSENT;
     @Test
@@ -54,7 +46,7 @@ public class DataTest extends TestCase {
         assertEquals(dotIndex, data.getDotIndex());
         assertEquals(answerParts, data.getAnswerParts().toString());
         assertEquals(residuals, data.getResiduals().toString());
-//        assertEquals(minuends, data.getMinuends().toString());
+        assertEquals(minuends, data.getMinuends().toString());
         assertEquals(subtrahends, data.getSubtrahends().toString());
     }
 
