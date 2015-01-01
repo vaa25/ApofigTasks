@@ -58,5 +58,21 @@ public class SourceValue {
         return valueString;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SourceValue)) return false;
 
+        SourceValue that = (SourceValue) o;
+
+        if (Double.compare(that.valueOrig, valueOrig) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        long temp = Double.doubleToLongBits(valueOrig);
+        return (int) (temp ^ (temp >>> 32));
+    }
 }
