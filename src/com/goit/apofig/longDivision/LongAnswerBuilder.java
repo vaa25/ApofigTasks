@@ -22,7 +22,7 @@ class LongAnswerBuilder {
         int offset = 1;
         for (int i = 1; i < data.getAnswerParts().size(); i++) {
             String subtrahend = data.getSubtrahends().get(i).toString();
-            String minuend = data.getMinuends().get(i - 1).toString();
+            String minuend = data.getMinuends().get(i).toString();
             if (!"0".equals(subtrahend)) {
                 buildCascade(subtrahend, minuend, OffsetBuilder.getOffset(offset));
             }

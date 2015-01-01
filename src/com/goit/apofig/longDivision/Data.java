@@ -4,7 +4,7 @@ package com.goit.apofig.longDivision;
  * @author Alexander Vlasov
  */
 class Data {
-    private final int ABSENT = -1;
+    public static final int ABSENT = -1;
     private Values<Residual> residuals = new Values<>();
     private Values<Minuend> minuends = new Values<>();
     private Values<Subtrahend> subtrahends = new Values<>();
@@ -107,8 +107,8 @@ class Data {
         Subtrahend subtrahend = new Subtrahend(answerPart, denominator);
         Residual residual = new Residual(minuend, subtrahend);
         setPeriodIfNeed(residual);
-        minuend = getNextMinuend(residual);
         addValuesToLists(minuend, answerPart, subtrahend, residual);
+        minuend = getNextMinuend(residual);
         setDotIfNeed();
         numerator.increaseDigitCounter();
         return minuend;
