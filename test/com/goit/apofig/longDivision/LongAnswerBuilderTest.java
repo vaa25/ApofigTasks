@@ -8,7 +8,7 @@ public class LongAnswerBuilderTest extends TestCase {
 
     @Test
     public void testBuildLongAnswer() throws Exception {
-        testBla(2930, 2.45,
+            testBuildLongAnswer(2930, 2.45,
                 " 293000|245\n" +
                         "-      +-------------------------------------------------\n" +
                         " 245   |1195.(918367346938775510204081632653061224489795)\n" +
@@ -178,19 +178,19 @@ public class LongAnswerBuilderTest extends TestCase {
                         "                                             1225\n" +
                         "                                             ----\n" +
                         "                                              225");
-        testBla(4, 2,
+            testBuildLongAnswer(4, 2,
                 " 4|2\n" +
                         "- +-\n" +
                         " 4|2\n" +
                         " -\n" +
                         "  0");
-        testBla(40, 2,
+            testBuildLongAnswer(40, 2,
                 " 40|2\n" +
                         "-  +--\n" +
                         " 4 |20\n" +
                         " -\n" +
                         "  0");
-        testBla(2, 40,
+            testBuildLongAnswer(2, 40,
                 " 2|40\n" +
                         "- +----\n" +
                         " 0|0.05\n" +
@@ -200,7 +200,7 @@ public class LongAnswerBuilderTest extends TestCase {
                         "  200\n" +
                         "  ---\n" +
                         "    0");
-        testBla(2930, 24,
+            testBuildLongAnswer(2930, 24,
                 " 2930|24\n" +
                         "-    +---------\n" +
                         " 24  |122.08(3)\n" +
@@ -222,7 +222,7 @@ public class LongAnswerBuilderTest extends TestCase {
                         "      72\n" +
                         "      --\n" +
                         "       8");
-        testBla(190, 4,
+            testBuildLongAnswer(190, 4,
                 " 190|4\n" +
                         "-   +----\n" +
                         " 16 |47.5\n" +
@@ -238,7 +238,7 @@ public class LongAnswerBuilderTest extends TestCase {
                         "    0");
     }
 
-    private void testBla(double numerator, double denominator, String expected) {
+        private void testBuildLongAnswer(double numerator, double denominator, String expected) {
         Data data = new Data(numerator, denominator);
         data.calculate();
         LongAnswerBuilder builder = new LongAnswerBuilder(data);

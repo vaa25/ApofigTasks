@@ -52,28 +52,28 @@ public class DataTest extends TestCase {
 
     @Test
     public void testHasIrrationalAnswer() throws Exception {
-        testHia(2930, 2.45, true);
-        testHia(4, 2, false);
-        testHia(2, 40, false);
-        testHia(190, 4, false);
-        testHia(2930, 24, true);
+        testHasIrrationalAnswer(2930, 2.45, true);
+        testHasIrrationalAnswer(4, 2, false);
+        testHasIrrationalAnswer(2, 40, false);
+        testHasIrrationalAnswer(190, 4, false);
+        testHasIrrationalAnswer(2930, 24, true);
     }
 
-    private void testHia(double numerator, double denominator, boolean expected) {
+    private void testHasIrrationalAnswer(double numerator, double denominator, boolean expected) {
         Data data = new Data(numerator, denominator);
         data.calculate();
         assertEquals(expected, data.hasIrrationalAnswer());
     }
     @Test
     public void testIsRationalSymptomDetected() throws Exception {
-        testIrsd(2930, 2.45, false);
-        testIrsd(4, 2, true);
-        testIrsd(2, 40, true);
-        testIrsd(190, 4, true);
-        testIrsd(2930, 24, false);
+        testIsRationalSymptomDetected(2930, 2.45, false);
+        testIsRationalSymptomDetected(4, 2, true);
+        testIsRationalSymptomDetected(2, 40, true);
+        testIsRationalSymptomDetected(190, 4, true);
+        testIsRationalSymptomDetected(2930, 24, false);
     }
 
-    private void testIrsd(double numerator, double denominator, boolean expected) {
+    private void testIsRationalSymptomDetected(double numerator, double denominator, boolean expected) {
         Data data = new Data(numerator, denominator);
         data.calculate();
         assertEquals(expected, data.isRationalSymptomDetected());
