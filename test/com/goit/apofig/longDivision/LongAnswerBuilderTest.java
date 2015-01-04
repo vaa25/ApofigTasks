@@ -5,11 +5,13 @@ import org.junit.Test;
 
 
 public class LongAnswerBuilderTest extends TestCase {
+    private Data data;
+    private LongAnswerBuilder builder;
 
     @Test
     public void testBuildLongAnswer() throws Exception {
-            testBuildLongAnswer(2930, 2.45,
-                " 293000|245\n" +
+        given(2930, 2.45);
+        thenBulidLongAnswer(" 293000|245\n" +
                         "-      +-------------------------------------------------\n" +
                         " 245   |1195.(918367346938775510204081632653061224489795)\n" +
                         " ---\n" +
@@ -178,20 +180,23 @@ public class LongAnswerBuilderTest extends TestCase {
                         "                                             1225\n" +
                         "                                             ----\n" +
                         "                                              225");
-            testBuildLongAnswer(4, 2,
-                " 4|2\n" +
+
+        given(4, 2);
+        thenBulidLongAnswer(" 4|2\n" +
                         "- +-\n" +
                         " 4|2\n" +
                         " -\n" +
                         "  0");
-            testBuildLongAnswer(40, 2,
-                " 40|2\n" +
+
+        given(40, 2);
+        thenBulidLongAnswer(" 40|2\n" +
                         "-  +--\n" +
                         " 4 |20\n" +
                         " -\n" +
                         "  0");
-            testBuildLongAnswer(2, 40,
-                " 2|40\n" +
+
+        given(2, 40);
+        thenBulidLongAnswer(" 2|40\n" +
                         "- +----\n" +
                         " 0|0.05\n" +
                         " -\n" +
@@ -200,8 +205,9 @@ public class LongAnswerBuilderTest extends TestCase {
                         "  200\n" +
                         "  ---\n" +
                         "    0");
-            testBuildLongAnswer(2930, 24,
-                " 2930|24\n" +
+
+        given(2930, 24);
+        thenBulidLongAnswer(" 2930|24\n" +
                         "-    +---------\n" +
                         " 24  |122.08(3)\n" +
                         " --\n" +
@@ -222,8 +228,9 @@ public class LongAnswerBuilderTest extends TestCase {
                         "      72\n" +
                         "      --\n" +
                         "       8");
-            testBuildLongAnswer(190, 4,
-                " 190|4\n" +
+
+        given(190, 4);
+        thenBulidLongAnswer(" 190|4\n" +
                         "-   +----\n" +
                         " 16 |47.5\n" +
                         " --\n" +
@@ -238,10 +245,15 @@ public class LongAnswerBuilderTest extends TestCase {
                         "    0");
     }
 
-        private void testBuildLongAnswer(double numerator, double denominator, String expected) {
-        Data data = new Data(numerator, denominator);
-        data.calculate();
-        LongAnswerBuilder builder = new LongAnswerBuilder(data);
+    private void thenBulidLongAnswer(String expected) {
         assertEquals(expected, builder.buildLongAnswer());
     }
+
+    private void given(double numerator, double denominator) {
+        data = new Data(numerator, denominator);
+        data.calculate();
+        builder = new LongAnswerBuilder(data);
+    }
+
+
 }

@@ -9,6 +9,7 @@ public class CustomerTest extends TestCase {
 
     @Before
     public void setUp() throws Exception {
+        //given
         customer = new Customer("Alexander");
         CustomerLauncher.setMovies();
         CustomerLauncher.rentMovies(customer);
@@ -16,7 +17,8 @@ public class CustomerTest extends TestCase {
     }
     @Test
     public void testStatement() throws Exception {
-        String example = "Учет аренды для Alexander\n" +
+        //then
+        assertEqualsArray(("Учет аренды для Alexander\n" +
                 "\tLost\t2.0\n" +
                 "\tElementary\t3.0\n" +
                 "\tForever\t6.0\n" +
@@ -26,23 +28,15 @@ public class CustomerTest extends TestCase {
                 "\tGrimm\t6.0\n" +
                 "\tBattleship Galaxy\t9.5\n" +
                 "Сумма задолженности составляет 53.5\n" +
-                "Вы заработали 11 очков за активность";
-        String result = customer.statement();
-        if (!example.equals(result)) {
-            System.out.println("Failed!!!!!! \n");
-            System.out.println("Example: \n");
-            System.out.println(example);
-            System.out.println();
-            System.out.println("Reality: \n");
-            System.out.println(result);
-        } else {
-            System.out.println("Well done!!!");
-        }
+                        "Вы заработали 11 очков за активность").split("\\n"),
+                customer.statement().split("\\n"));
     }
 
     @Test
     public void testHtmlStatement() throws Exception {
-        String[] example = ("<H1>Операции аренды для <EM>Alexander</EM></H1><P>\n" +
+        //then
+        assertNotNull(customer.htmlStatement());
+        assertEqualsArray(("<H1>Операции аренды для <EM>Alexander</EM></H1><P>\n" +
                 "Lost: 2.0<BR>\n" +
                 "Elementary: 3.0<BR>\n" +
                 "Forever: 6.0<BR>\n" +
@@ -52,10 +46,8 @@ public class CustomerTest extends TestCase {
                 "Grimm: 6.0<BR>\n" +
                 "Battleship Galaxy: 9.5<BR>\n" +
                 "<P>Ваша задолженность составляет <EM>53.5</EM><P>\n" +
-                "На этой аренде вы заработали <EM>11</EM> очков за активность<P>").split("\\n");
-        assertNotNull(customer.htmlStatement());
-        String[] result = customer.htmlStatement().split("\\n");
-        assertEqualsArray(example, result);
+                        "На этой аренде вы заработали <EM>11</EM> очков за активность<P>").split("\\n"),
+                customer.htmlStatement().split("\\n"));
     }
 
     private void assertEqualsArray(String[] example, String[] result) {
