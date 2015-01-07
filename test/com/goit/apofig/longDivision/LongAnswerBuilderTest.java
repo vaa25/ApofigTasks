@@ -9,7 +9,85 @@ public class LongAnswerBuilderTest extends TestCase {
     private LongAnswerBuilder builder;
 
     @Test
-    public void testBuildLongAnswer() throws Exception {
+    public void testBuildLongAnswer_190_4() {
+        given(190, 4);
+        thenBulidLongAnswer(" 190|4\n" +
+                "-   +----\n" +
+                " 16 |47.5\n" +
+                " --\n" +
+                "  30\n" +
+                " -\n" +
+                "  28\n" +
+                "  --\n" +
+                "   20\n" +
+                "  -\n" +
+                "   20\n" +
+                "   --\n" +
+                "    0");
+    }
+
+    @Test
+    public void testBuildLongAnswer_2930_24() {
+        given(2930, 24);
+        thenBulidLongAnswer(" 2930|24\n" +
+                "-    +---------\n" +
+                " 24  |122.08(3)\n" +
+                " --\n" +
+                "  53\n" +
+                " -\n" +
+                "  48\n" +
+                "  --\n" +
+                "   50\n" +
+                "  -\n" +
+                "   48\n" +
+                "   --\n" +
+                "    200\n" +
+                "   -\n" +
+                "    192\n" +
+                "    ---\n" +
+                "      80\n" +
+                "     -\n" +
+                "      72\n" +
+                "      --\n" +
+                "       8");
+    }
+
+    @Test
+    public void testBuildLongAnswer_2_40() {
+        given(2, 40);
+        thenBulidLongAnswer(" 2|40\n" +
+                "- +----\n" +
+                " 0|0.05\n" +
+                " -\n" +
+                "  200\n" +
+                " -\n" +
+                "  200\n" +
+                "  ---\n" +
+                "    0");
+    }
+
+    @Test
+    public void testBuildLongAnswer_40_2() {
+        given(40, 2);
+        thenBulidLongAnswer(" 40|2\n" +
+                "-  +--\n" +
+                " 4 |20\n" +
+                " -\n" +
+                "  0");
+    }
+
+    @Test
+    public void testBuildLongAnswer_4_2() {
+        given(4, 2);
+        thenBulidLongAnswer(" 4|2\n" +
+                "- +-\n" +
+                " 4|2\n" +
+                " -\n" +
+                "  0");
+    }
+
+    @Test
+    public void testBuildLongAnswer_2930_2_45() {
         given(2930, 2.45);
         thenBulidLongAnswer(" 293000|245\n" +
                         "-      +-------------------------------------------------\n" +
@@ -180,69 +258,6 @@ public class LongAnswerBuilderTest extends TestCase {
                         "                                             1225\n" +
                         "                                             ----\n" +
                         "                                              225");
-
-        given(4, 2);
-        thenBulidLongAnswer(" 4|2\n" +
-                        "- +-\n" +
-                        " 4|2\n" +
-                        " -\n" +
-                        "  0");
-
-        given(40, 2);
-        thenBulidLongAnswer(" 40|2\n" +
-                        "-  +--\n" +
-                        " 4 |20\n" +
-                        " -\n" +
-                        "  0");
-
-        given(2, 40);
-        thenBulidLongAnswer(" 2|40\n" +
-                        "- +----\n" +
-                        " 0|0.05\n" +
-                        " -\n" +
-                        "  200\n" +
-                        " -\n" +
-                        "  200\n" +
-                        "  ---\n" +
-                        "    0");
-
-        given(2930, 24);
-        thenBulidLongAnswer(" 2930|24\n" +
-                        "-    +---------\n" +
-                        " 24  |122.08(3)\n" +
-                        " --\n" +
-                        "  53\n" +
-                        " -\n" +
-                        "  48\n" +
-                        "  --\n" +
-                        "   50\n" +
-                        "  -\n" +
-                        "   48\n" +
-                        "   --\n" +
-                        "    200\n" +
-                        "   -\n" +
-                        "    192\n" +
-                        "    ---\n" +
-                        "      80\n" +
-                        "     -\n" +
-                        "      72\n" +
-                        "      --\n" +
-                        "       8");
-
-        given(190, 4);
-        thenBulidLongAnswer(" 190|4\n" +
-                        "-   +----\n" +
-                        " 16 |47.5\n" +
-                        " --\n" +
-                        "  30\n" +
-                        " -\n" +
-                        "  28\n" +
-                        "  --\n" +
-                        "   20\n" +
-                        "  -\n" +
-                        "   20\n" +
-                        "   --\n" +
-                        "    0");
     }
 
     private void thenBulidLongAnswer(String expected) {
